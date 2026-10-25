@@ -8,7 +8,7 @@ services:
     region: frankfurt
     branch: main
     # בניית האתר (frontend/dist) ואז התקנה + prisma generate + קומפילציה של השרת
-    buildCommand: cd frontend && npm ci && npm run build && cd ../backend-project && npm ci --include=dev && npm run build
+    buildCommand: cd frontend && npm ci --include=dev && npm run build && cd ../backend-project && npm ci --include=dev && npm run build
     # הפעלה: Migrations למסד הנתונים -> Seed (רק לפי משתני הסביבה) -> השרת
     startCommand: cd backend-project && npm run start:render
     healthCheckPath: /api/health
