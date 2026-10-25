@@ -1,0 +1,34 @@
+# הגדרות פריסה ל-Render (Blueprint) - שירות אחד שמגיש גם את ה-API וגם את אתר ה-React
+# מסד הנתונים נמצא אצל ספק נפרד (למשל Neon) - מדביקים את הכתובת שלו ב-DATABASE_URL
+services:
+  - type: web
+    name: community-polls-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    # בניית האתר (frontend/dist) ואז התקנה + prisma generate + קומפילציה של השרת
+    buildCommand: cd frontend && npm ci && npm run build && cd ../backend-project && npm ci --include=dev && npm run build
+    # הפעלה: Migrations למסד הנתונים -> Seed (רק לפי משתני הסביבה) -> השרת
+    startCommand: cd backend-project && npm run start:render
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "24"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 2h
+      - key: SEED_ADMIN_EMAIL
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
+      - key: SEED_ADMIN_NAME
+        value: מנהל האתר
+      - key: SEED_DEMO_PASSWORD
+        sync: false

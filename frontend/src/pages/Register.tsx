@@ -1,0 +1,101 @@
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import {
+  register as registerUser,
+  type RegisterData,
+} from "../api/authService";
+import { getErrorMessage } from "../api/client";
+import ErrorMessage from "../components/ErrorMessage";
+import { useAppDispatch } from "../store/store";
+import { setUser } from "../store/authSlice";
+
+function RegisterPage() {
+  const dispatch = useAppDispatch();
+
+  // React Hook Form: מנהל את שדות הטופס ואת שגיאות הוולידציה
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterData>();
+
+  const registerMutation = useMutation({
+    // login מקבלת שני פרמטרים, ו-mutate מעביר אובייקט אחד - לכן מפרקים אותו
+    mutationFn: (data: RegisterData) =>
+      registerUser(data.name, data.email, data.password),
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      dispatch(setUser(data.user));
+      // בהמשך: מעבר לדף הסקרים
+    },
+  });
+
+  // רץ רק אם כל השדות עברו את הוולידציה
+  const onSubmit = (data: RegisterData) => {
+    registerMutation.mutate(data);
+  };
+
+  return (
+    // noValidate: מבטל את הבדיקות המובנות של הדפדפן, כדי שרק React Hook Form יבדוק ויציג הודעות בעברית
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <h1>הרשמה</h1>
+      <div>
+        <label htmlFor="name">שם</label>
+        <input
+          id="name"
+          type="text"
+          {...register("name", {
+            required: "יש להזין שם",
+          })}
+        />
+        <ErrorMessage message={errors.name?.message} />
+      </div>
+      <div>
+        <label htmlFor="email">מייל</label>
+        <input
+          id="email"
+          type="email"
+          dir="ltr"
+          {...register("email", {
+            required: "יש להזין מייל",
+            pattern: {
+              value: /^\S+@\S+\.\S+$/,
+              message: "כתובת מייל לא תקינה",
+            },
+          })}
+        />
+        <ErrorMessage message={errors.email?.message} />
+      </div>
+
+      <div>
+        <label htmlFor="password">סיסמה</label>
+        <input
+          id="password"
+          type="password"
+          dir="ltr"
+          {...register("password", {
+            required: "יש להזין סיסמה",
+            minLength: { value: 8, message: "לפחות 8 תווים" },
+            maxLength: { value: 72, message: "עד 72 תווים" },
+            pattern: {
+              value: /^(?=.*[A-Za-z])(?=.*\d)/,
+              message: "צריך לפחות אות באנגלית וספרה",
+            },
+          })}
+        />
+        <ErrorMessage message={errors.password?.message} />
+      </div>
+
+      {/* שגיאה מהשרת, למשל "אימייל כבר רשום במערכת" */}
+      {registerMutation.isError && (
+        <ErrorMessage message={getErrorMessage(registerMutation.error)} />
+      )}
+
+      <button type="submit" disabled={registerMutation.isPending}>
+        {registerMutation.isPending ? "נרשם..." : "הרשם"}
+      </button>
+    </form>
+  );
+}
+
+export default RegisterPage;

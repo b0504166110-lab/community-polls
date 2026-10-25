@@ -1,0 +1,39 @@
+/* משתני העיצוב של האתר: צבעים וגופנים. כל שאר קבצי ה-CSS משתמשים רק בהם */
+
+:root {
+  /* חמשת הצבעים: הצבע עצמו (לרקעים ולמילוי) והגוון הכהה (לטקסט על רקע לבן) */
+  --violet: #6c4cf1;
+  --violet-dark: #5a3fe0;
+  --pink: #ff5d8f;
+  --pink-dark: #d6336c;
+  --orange: #ff9f1c;
+  --orange-dark: #c2570c;
+  --teal: #12b3a8;
+  --teal-dark: #0a7d74;
+  --blue: #2f80ed;
+  --blue-dark: #1c6fd1;
+
+  /* גוונים בהירים לרקעי כרטיסים וכתמים */
+  --violet-soft: #f3f0ff;
+  --pink-soft: #ffe3ec;
+  --orange-soft: #fff4e5;
+  --teal-soft: #e8f8f6;
+  --blue-soft: #e5efff;
+
+  /* צבע ראשי וטקסט */
+  --brand: var(--violet);
+  --brand-dark: var(--violet-dark);
+  --brand-soft: var(--violet-soft);
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --ink: #2b2550;
+  --muted: #6b6785;
+
+  /* צורות וצל רך (בלי קווי מתאר ובלי צללים חדים) */
+  --radius-card: 32px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 10px 30px rgb(108 76 241 / 10%);
+  /* גופנים: כותרות Varela Round, טקסט Assistant */
+  --font-heading: 'Varela Round', 'Assistant', system-ui, sans-serif;
+  --font-body: 'Assistant', system-ui, 'Segoe UI', Arial, sans-serif;
+}
