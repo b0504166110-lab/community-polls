@@ -22,7 +22,7 @@ apiRouter.use('/auth', authRouter);
 // סקרים
 const pollsRouter = Router();
 pollsRouter.get('/', optionalAuth, polls.list);
-pollsRouter.get('/:id', optionalAuth, polls.getById);
+pollsRouter.get('/:id', authenticate, polls.getById);
 pollsRouter.post('/', authenticate, polls.create);
 pollsRouter.put('/:id', authenticate, polls.update);
 pollsRouter.delete('/:id', authenticate, polls.remove);

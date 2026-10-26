@@ -4,7 +4,7 @@ import {
   register as registerUser,
   type RegisterData,
 } from "../api/authService";
-import { getErrorMessage } from "../api/client";
+import { getErrorMessage, getFieldErrors } from "../api/client";
 import ErrorMessage from "../components/ErrorMessage";
 import { useAppDispatch } from "../store/store";
 import { setUser } from "../store/authSlice";
@@ -16,6 +16,7 @@ function RegisterPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterData>();
 
@@ -27,6 +28,15 @@ function RegisterPage() {
       localStorage.setItem("token", data.token);
       dispatch(setUser(data.user));
       // בהמשך: מעבר לדף הסקרים
+    },
+    // שגיאות ולידציה מהשרת מוצגות מתחת לשדה הרלוונטי
+    onError: (error) => {
+      const fieldErrors = getFieldErrors(error);
+      for (const field of ["name", "email", "password"] as const) {
+        if (fieldErrors[field]) {
+          setError(field, { message: fieldErrors[field] });
+        }
+      }
     },
   });
 
@@ -87,7 +97,7 @@ function RegisterPage() {
       </div>
 
       {/* שגיאה מהשרת, למשל "אימייל כבר רשום במערכת" */}
-      {registerMutation.isError && (
+      {registerMutation.isError && !Object.keys(errors).length && (
         <ErrorMessage message={getErrorMessage(registerMutation.error)} />
       )}
 

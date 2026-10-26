@@ -4,7 +4,6 @@ import { getResults } from "../api/pollsService";
 import { getErrorMessage } from "../api/client";
 import ErrorMessage from "./ErrorMessage";
 
-// הדיאגרמה (וספריית ECharts) נטענת רק כשבאמת מציגים תוצאות
 const QuestionChart = lazy(() => import("./QuestionChart"));
 
 type Props = {

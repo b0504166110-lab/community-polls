@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getPolls, getCategories, type PollsFilters } from "../api/pollsService";
-import { getErrorMessage } from "../api/client";
-import ErrorMessage from "../components/ErrorMessage";
 import PollsFiltersBar from "../components/PollsFiltersBar";
 import PollCard from "../components/PollCard";
-import Pagination from "../components/Pagination";
+import PollsResults from "../components/PollsResults";
 
 function PollsList() {
   const [filters, setFilters] = useState<PollsFilters>({
@@ -39,28 +37,14 @@ function PollsList() {
         categories={categories}
         onChange={changeFilter}
       />
-
-      {isPending ? (
-        <p>טוען...</p>
-      ) : isError ? (
-        <ErrorMessage message={getErrorMessage(error)} />
-      ) : data.items.length === 0 ? (
-        <p>לא נמצאו סקרים</p>
-      ) : (
-        <>
-          <ul>
-            {data.items.map((poll) => (
-              <PollCard key={poll.id} poll={poll} />
-            ))}
-          </ul>
-
-          <Pagination
-            page={data.page}
-            totalPages={data.totalPages}
-            onPageChange={goToPage}
-          />
-        </>
-      )}
+      <PollsResults
+        data={data}
+        isPending={isPending}
+        isError={isError}
+        error={error}
+        renderItem={(poll) => <PollCard poll={poll} />}
+        onPageChange={goToPage}
+      />
     </div>
   );
 }

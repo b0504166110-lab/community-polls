@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getAdminPolls, type AdminPollsFilters } from "../api/adminService";
-import { getErrorMessage } from "../api/client";
-import ErrorMessage from "../components/ErrorMessage";
 import AdminFiltersBar from "../components/AdminFiltersBar";
 import AdminPollCard from "../components/AdminPollCard";
-import Pagination from "../components/Pagination";
+import PollsResults from "../components/PollsResults";
 
 function AdminPage() {
   const [filters, setFilters] = useState<AdminPollsFilters>({
@@ -33,27 +31,14 @@ function AdminPage() {
       <h2>ניהול סקרים</h2>
       <AdminFiltersBar filters={filters} onChange={changeFilter} />
 
-      {isPending ? (
-        <p>טוען...</p>
-      ) : isError ? (
-        <ErrorMessage message={getErrorMessage(error)} />
-      ) : data.items.length === 0 ? (
-        <p>לא נמצאו סקרים</p>
-      ) : (
-        <>
-          <ul>
-            {data.items.map((poll) => (
-              <AdminPollCard key={poll.id} poll={poll} />
-            ))}
-          </ul>
-
-          <Pagination
-            page={data.page}
-            totalPages={data.totalPages}
-            onPageChange={goToPage}
-          />
-        </>
-      )}
+      <PollsResults
+        data={data}
+        isPending={isPending}
+        isError={isError}
+        error={error}
+        renderItem={(poll) => <AdminPollCard poll={poll} />}
+        onPageChange={goToPage}
+      />
     </div>
   );
 }

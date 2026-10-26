@@ -141,7 +141,9 @@ describe('ניהול סקרים', () => {
     expect(hide.status).toBe(200);
     expect(hide.body).toMatchObject({ isHidden: true, isOpen: false });
     expect((await api().get('/api/polls')).body.total).toBe(0);
-    expect((await api().get(`/api/polls/${poll.id}`)).status).toBe(404);
+    expect((await api().get(`/api/polls/${poll.id}`)).status).toBe(401);
+    const stranger = await createUser();
+    expect((await api().get(`/api/polls/${poll.id}`).set('Authorization', stranger.auth)).status).toBe(404);
 
     const show = await api().patch(`/api/admin/polls/${poll.id}/visibility`).set('Authorization', admin.auth).send({ isHidden: false });
     expect(show.body.isHidden).toBe(false);

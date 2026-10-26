@@ -16,7 +16,9 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/polls" element={<PollsList />} />
-      <Route path="/polls/:id" element={<PollDetails />} />
+      <Route path="/polls/:id" element={<ProtectedRoute>
+            <PollDetails />{" "}
+          </ProtectedRoute>} />
       <Route
         path="/login"
         element={user ? <Navigate to="/polls" /> : <LoginPage />}

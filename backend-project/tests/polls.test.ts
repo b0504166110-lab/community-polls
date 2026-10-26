@@ -125,7 +125,7 @@ describe('צפייה בסקרים ומניעת גישה', () => {
     const admin = await createUser('ADMIN');
     const poll = await createPoll(owner.user.id, { status: 'PENDING' });
 
-    expect((await api().get(`/api/polls/${poll.id}`)).status).toBe(404);
+    expect((await api().get(`/api/polls/${poll.id}`)).status).toBe(401);
     expect((await api().get(`/api/polls/${poll.id}`).set('Authorization', stranger.auth)).status).toBe(404);
     expect((await api().get(`/api/polls/${poll.id}`).set('Authorization', owner.auth)).status).toBe(200);
     expect((await api().get(`/api/polls/${poll.id}`).set('Authorization', admin.auth)).status).toBe(200);
@@ -138,24 +138,27 @@ describe('צפייה בסקרים ומניעת גישה', () => {
     expect(res.body.rejectionReason).toBe('לא ברור');
   });
 
-  it('אורח לא מקבל את האימייל של היוצר', async () => {
+  it('אורח לא מקבל פרטי סקר - 401', async () => {
     const owner = await createUser();
     const poll = await createPoll(owner.user.id);
     const res = await api().get(`/api/polls/${poll.id}`);
+    expect(res.status).toBe(401);
+  });
+
+  it('משתמש אחר לא מקבל את האימייל של היוצר', async () => {
+    const owner = await createUser();
+    const stranger = await createUser();
+    const poll = await createPoll(owner.user.id);
+    const res = await api().get(`/api/polls/${poll.id}`).set('Authorization', stranger.auth);
     expect(res.status).toBe(200);
     expect(res.body.creator).toEqual({ id: owner.user.id, name: owner.user.name });
-    expect(res.body.permissions).toEqual({
-      canVote: false,
-      canSeeResults: false,
-      canEdit: false,
-      canDelete: false,
-      canClose: false,
-    });
+    expect(res.body.permissions).toMatchObject({ canEdit: false, canDelete: false, canClose: false });
   });
 
   it('מזהה לא תקין - 400, סקר שלא קיים - 404', async () => {
-    expect((await api().get('/api/polls/abc')).status).toBe(400);
-    expect((await api().get('/api/polls/99999')).status).toBe(404);
+    const { auth } = await createUser();
+    expect((await api().get('/api/polls/abc').set('Authorization', auth)).status).toBe(400);
+    expect((await api().get('/api/polls/99999').set('Authorization', auth)).status).toBe(404);
   });
 
   it('Token לא תקין גם ב-Endpoint ציבורי - 401', async () => {
