@@ -308,9 +308,10 @@ button.secondary {
 }
 
 input,
-select {
+select,
+textarea {
   padding: 8px 18px;
-  border: 0;
+  border: 2px solid var(--violet-soft);
   border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--ink);
@@ -320,6 +321,10 @@ select {
 input:not([type="checkbox"], [type="radio"]),
 select {
   min-height: 46px;
+}
+
+textarea {
+  border-radius: 24px;
 }
 
 input[type="checkbox"],
