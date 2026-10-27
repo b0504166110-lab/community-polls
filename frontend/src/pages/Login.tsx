@@ -6,14 +6,28 @@ import ErrorMessage from "../components/ErrorMessage";
 import { useAppDispatch } from "../store/store";
 import { setUser } from "../store/authSlice";
 import { setToken } from "../utils/tokenStorage";
+
+const demoAccounts = [
+  { label: "משתמש לדוגמה", email: "noa@example.com", password: "User1234!" },
+  { label: "מנהל", email: "admin@example.com", password: "Admin1234!" },
+];
+
 function LoginPage() {
   const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<LoginData>();
+
+  function fillDemo(account: (typeof demoAccounts)[number]) {
+    setValue("email", account.email);
+    setValue("password", account.password);
+    clearErrors();
+  }
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginData) => login(data.email, data.password),
@@ -30,6 +44,19 @@ function LoginPage() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <h1>התחברות</h1>
+
+      <div>
+        <label>מילוי מהיר</label>
+        {demoAccounts.map((account) => (
+          <button
+            key={account.email}
+            type="button"
+            onClick={() => fillDemo(account)}
+          >
+            {account.label}
+          </button>
+        ))}
+      </div>
 
       <div>
         <label htmlFor="email">מייל</label>
