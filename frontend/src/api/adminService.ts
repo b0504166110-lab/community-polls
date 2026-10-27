@@ -15,7 +15,7 @@ export type AdminPollsResponse = {
   totalPages: number;
 };
 export type AdminPollsFilters = {
-  status?: "APPROVED"|"REJECTED"|"PENDING";
+  status?: "APPROVED" | "REJECTED" | "PENDING";
   hidden?: boolean;
   search?: string;
   page?: number;
@@ -27,16 +27,19 @@ export async function getAdminPolls(filters: AdminPollsFilters) {
   });
   return res.data;
 }
-export async function approvePoll (id: number) {
+export async function approvePoll(id: number) {
   const res = await api.post<PollDetails>(`/admin/polls/${id}/approve`);
   return res.data;
 }
 export async function rejectPoll(id: number, reason: string) {
-  const res = await api.post<PollDetails>(`/admin/polls/${id}/reject`, { reason });
+  const res = await api.post<PollDetails>(`/admin/polls/${id}/reject`, {
+    reason,
+  });
   return res.data;
 }
-export async function setPollHidden  (id: number,isHidden:boolean) {
-  const res = await api.patch<PollDetails>(`/admin/polls/${id}/visibility`,{isHidden});
+export async function setPollHidden(id: number, isHidden: boolean) {
+  const res = await api.patch<PollDetails>(`/admin/polls/${id}/visibility`, {
+    isHidden,
+  });
   return res.data;
 }
-

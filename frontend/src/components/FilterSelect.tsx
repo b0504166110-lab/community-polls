@@ -7,7 +7,12 @@ type FilterSelectProps = {
   allLabel?: string;
 };
 
-function FilterSelect({ value, options, onChange, allLabel }: FilterSelectProps) {
+function FilterSelect({
+  value,
+  options,
+  onChange,
+  allLabel,
+}: FilterSelectProps) {
   return (
     <select value={value ?? ""} onChange={(e) => onChange(e.target.value)}>
       {allLabel && <option value="">{allLabel}</option>}

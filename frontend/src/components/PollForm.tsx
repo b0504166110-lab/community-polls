@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getCategories, type PollInput, type QuestionInput } from "../api/pollsService";
+import {
+  getCategories,
+  type PollInput,
+  type QuestionInput,
+} from "../api/pollsService";
 import { validatePoll } from "../utils/validatePoll";
 import FilterSelect from "./FilterSelect";
 import ErrorMessage from "./ErrorMessage";
 import QuestionEditor from "./QuestionEditor";
 
-const emptyQuestion: QuestionInput = { text: "", allowMultiple: false, options: ["", ""] };
+const emptyQuestion: QuestionInput = {
+  text: "",
+  allowMultiple: false,
+  options: ["", ""],
+};
 
 const emptyPoll: PollInput = {
   title: "",
@@ -24,7 +32,13 @@ type PollFormProps = {
   submitLabel?: string;
 };
 
-function PollForm({ onSubmit, isSubmitting, errors, initialValues = emptyPoll, submitLabel = "שליחה" }: PollFormProps) {
+function PollForm({
+  onSubmit,
+  isSubmitting,
+  errors,
+  initialValues = emptyPoll,
+  submitLabel = "שליחה",
+}: PollFormProps) {
   const [poll, setPoll] = useState<PollInput>(initialValues);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
@@ -33,9 +47,13 @@ function PollForm({ onSubmit, isSubmitting, errors, initialValues = emptyPoll, s
     queryFn: getCategories,
   });
 
-  const shownErrors = Object.keys(clientErrors).length > 0 ? clientErrors : errors;
+  const shownErrors =
+    Object.keys(clientErrors).length > 0 ? clientErrors : errors;
 
-  function changeField(name: "title" | "description" | "category" | "closesAt", value: string) {
+  function changeField(
+    name: "title" | "description" | "category" | "closesAt",
+    value: string,
+  ) {
     setPoll((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -47,7 +65,10 @@ function PollForm({ onSubmit, isSubmitting, errors, initialValues = emptyPoll, s
   }
 
   function addQuestion() {
-    setPoll((prev) => ({ ...prev, questions: [...prev.questions, emptyQuestion] }));
+    setPoll((prev) => ({
+      ...prev,
+      questions: [...prev.questions, emptyQuestion],
+    }));
   }
 
   function removeQuestion(qIndex: number) {

@@ -19,7 +19,11 @@ type PollsFiltersBarProps = {
   onChange: (name: keyof PollsFilters, value: string) => void;
 };
 
-function PollsFiltersBar({ filters, categories, onChange }: PollsFiltersBarProps) {
+function PollsFiltersBar({
+  filters,
+  categories,
+  onChange,
+}: PollsFiltersBarProps) {
   return (
     <div>
       <SearchBox onSearch={(text) => onChange("search", text)} />

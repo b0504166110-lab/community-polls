@@ -4,7 +4,6 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-// כפתורי הקודם/הבא ומספר העמוד הנוכחי
 function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   return (
     <div>
@@ -12,7 +11,8 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
         הקודם
       </button>
       <span>
-        {" "}עמוד {page} מתוך {totalPages}{" "}
+        {" "}
+        עמוד {page} מתוך {totalPages}{" "}
       </span>
       <button
         onClick={() => onPageChange(page + 1)}

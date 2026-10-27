@@ -23,7 +23,6 @@ function PollResults({ pollId }: Props) {
     <div>
       <h3>תוצאות ({data.totalVoters} מצביעים)</h3>
 
-      {/* דיאגרמה נפרדת לכל שאלה */}
       <Suspense fallback={<p>טוען דיאגרמות...</p>}>
         {data.questions.map((q) => (
           <QuestionChart key={q.id} question={q} myChoices={data.myChoices} />

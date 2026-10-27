@@ -1,18 +1,18 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { User } from '../api/authService';
-
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { User } from "../api/authService";
+import { getToken } from "../utils/tokenStorage";
 type AuthState = {
-  user: User | null; 
-  isChecking: boolean; 
+  user: User | null;
+  isChecking: boolean;
 };
 
 const initialState: AuthState = {
   user: null,
-  isChecking: localStorage.getItem('token') !== null,
+  isChecking: getToken() !== null,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {

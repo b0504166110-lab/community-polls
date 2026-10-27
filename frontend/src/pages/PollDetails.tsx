@@ -7,13 +7,11 @@ import VoteForm from "../components/VoteForm";
 import PollResults from "../components/PollResults";
 import PollQuestions from "../components/PollQuestions";
 import PollActions from "../components/PollActions";
-import { useAppSelector } from "../store/store";
 
 function PollDetails() {
   const { id } = useParams();
   const pollId = Number(id);
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.auth.user);
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["poll", pollId],
@@ -23,7 +21,6 @@ function PollDetails() {
   if (isPending) return <p>טוען...</p>;
   if (isError) return <ErrorMessage message={getErrorMessage(error)} />;
 
-  // פתוח/סגור רלוונטי רק לסקר מאושר - ממתין ונדחה מקבלים הודעת סטטוס משלהם
   const isApproved = data.status === "APPROVED";
 
   return (
@@ -47,7 +44,6 @@ function PollDetails() {
         onDeleted={() => navigate("/my-polls")}
       />
 
-      {/* אי אפשר להצביע ואין תוצאות (למשל סקר ממתין): מציגים את השאלות לקריאה בלבד */}
       {!data.permissions.canVote && !data.permissions.canSeeResults && (
         <PollQuestions questions={data.questions} />
       )}
@@ -56,8 +52,6 @@ function PollDetails() {
         <VoteForm pollId={data.id} questions={data.questions} />
       ) : data.permissions.canSeeResults ? (
         <PollResults pollId={data.id} />
-      ) : !user ? (
-        <p>התחברו כדי להצביע ולראות תוצאות</p>
       ) : (
         isApproved && <p>הסקר סגור</p>
       )}

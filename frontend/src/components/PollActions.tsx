@@ -12,7 +12,13 @@ type Props = {
   onDeleted?: () => void;
 };
 
-function PollActions({ pollId, canEdit, canDelete, canClose, onDeleted }: Props) {
+function PollActions({
+  pollId,
+  canEdit,
+  canDelete,
+  canClose,
+  onDeleted,
+}: Props) {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -54,7 +60,6 @@ function PollActions({ pollId, canEdit, canDelete, canClose, onDeleted }: Props)
           {closeMutation.isPending ? "סוגר..." : "סגירה"}
         </button>
       )}
-
       {deleteMutation.isError && (
         <ErrorMessage message={getErrorMessage(deleteMutation.error)} />
       )}

@@ -27,7 +27,7 @@ function AdminPollActions({ pollId, status, isHidden }: Props) {
     onSuccess: refresh,
   });
   const rejectMutation = useMutation({
-    mutationFn: () => rejectPoll(pollId, reason.trim() ),
+    mutationFn: () => rejectPoll(pollId, reason.trim()),
     onSuccess: () => {
       setReason("");
       refresh();
@@ -37,10 +37,10 @@ function AdminPollActions({ pollId, status, isHidden }: Props) {
     mutationFn: () => setPollHidden(pollId, !isHidden),
     onSuccess: refresh,
   });
-  const deleteMutation=useMutation({
-    mutationFn:()=>deletePoll(pollId),
-    onSuccess:refresh
-  })
+  const deleteMutation = useMutation({
+    mutationFn: () => deletePoll(pollId),
+    onSuccess: refresh,
+  });
 
   const isBusy =
     approveMutation.isPending ||
@@ -59,7 +59,6 @@ function AdminPollActions({ pollId, status, isHidden }: Props) {
           {approveMutation.isPending ? "מאשר..." : "אישור"}
         </button>
       )}{" "}
-
       {status !== "REJECTED" && (
         <>
           <input
@@ -77,7 +76,6 @@ function AdminPollActions({ pollId, status, isHidden }: Props) {
           </button>{" "}
         </>
       )}
-
       {status === "APPROVED" && (
         <button onClick={() => hiddenMutation.mutate()} disabled={isBusy}>
           {hiddenMutation.isPending
@@ -87,7 +85,6 @@ function AdminPollActions({ pollId, status, isHidden }: Props) {
               : "הסתרה"}
         </button>
       )}{" "}
-
       <button onClick={handleDelete} disabled={isBusy}>
         {deleteMutation.isPending ? "מוחק..." : "מחיקה"}
       </button>

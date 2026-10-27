@@ -34,9 +34,7 @@ function EditPoll() {
     <>
       <h2>עריכת סקר</h2>
       {data.status === "REJECTED" && (
-        <p>
-          הסקר נדחה{data.rejectionReason && `: ${data.rejectionReason}`}
-        </p>
+        <p>הסקר נדחה{data.rejectionReason && `: ${data.rejectionReason}`}</p>
       )}
       <p>אחרי השמירה הסקר יישלח שוב לאישור המנהל.</p>
 
@@ -47,7 +45,9 @@ function EditPoll() {
         errors={getFieldErrors(mutation.error)}
         submitLabel="שמירה"
       />
-      {mutation.isError && <ErrorMessage message={getErrorMessage(mutation.error)} />}
+      {mutation.isError && (
+        <ErrorMessage message={getErrorMessage(mutation.error)} />
+      )}
     </>
   );
 }

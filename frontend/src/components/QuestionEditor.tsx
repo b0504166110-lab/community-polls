@@ -10,11 +10,21 @@ type QuestionEditorProps = {
   canRemove: boolean;
 };
 
-function QuestionEditor({ question, index, errors, onChange, onRemove, canRemove }: QuestionEditorProps) {
+function QuestionEditor({
+  question,
+  index,
+  errors,
+  onChange,
+  onRemove,
+  canRemove,
+}: QuestionEditorProps) {
   const { options } = question;
 
   function changeOption(oIndex: number, value: string) {
-    onChange({ ...question, options: options.map((o, j) => (j === oIndex ? value : o)) });
+    onChange({
+      ...question,
+      options: options.map((o, j) => (j === oIndex ? value : o)),
+    });
   }
 
   function addOption() {
@@ -40,7 +50,9 @@ function QuestionEditor({ question, index, errors, onChange, onRemove, canRemove
         <input
           type="checkbox"
           checked={question.allowMultiple ?? false}
-          onChange={(e) => onChange({ ...question, allowMultiple: e.target.checked })}
+          onChange={(e) =>
+            onChange({ ...question, allowMultiple: e.target.checked })
+          }
         />
         אפשר בחירה מרובה?
       </label>
@@ -59,7 +71,9 @@ function QuestionEditor({ question, index, errors, onChange, onRemove, canRemove
           >
             מחיקה
           </button>
-          <ErrorMessage message={errors[`questions.${index}.options.${oIndex}`]} />
+          <ErrorMessage
+            message={errors[`questions.${index}.options.${oIndex}`]}
+          />
         </div>
       ))}
       <ErrorMessage message={errors[`questions.${index}.options`]} />

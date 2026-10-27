@@ -19,26 +19,26 @@ function PollsResults<T extends { id: number }>({
   renderItem,
   onPageChange,
 }: PollsResultsProps<T>) {
-return(isError ? (
-        <ErrorMessage message={getErrorMessage(error)} />
-      ) : isPending || !data ? (
-        <p>טוען...</p>
-      ) : data.items.length === 0 ? (
-        <p>לא נמצאו סקרים</p>
-      ) : (
-        <>
-          <ul>
-            {data.items.map((poll) => (
-              <Fragment key={poll.id}>{renderItem(poll)}</Fragment>
-            ))}
-          </ul>
+  return isError ? (
+    <ErrorMessage message={getErrorMessage(error)} />
+  ) : isPending || !data ? (
+    <p>טוען...</p>
+  ) : data.items.length === 0 ? (
+    <p>לא נמצאו סקרים</p>
+  ) : (
+    <>
+      <ul>
+        {data.items.map((poll) => (
+          <Fragment key={poll.id}>{renderItem(poll)}</Fragment>
+        ))}
+      </ul>
 
-          <Pagination
-            page={data.page}
-            totalPages={data.totalPages}
-            onPageChange={onPageChange}
-          />
-        </>
-      ))
+      <Pagination
+        page={data.page}
+        totalPages={data.totalPages}
+        onPageChange={onPageChange}
+      />
+    </>
+  );
 }
 export default PollsResults;

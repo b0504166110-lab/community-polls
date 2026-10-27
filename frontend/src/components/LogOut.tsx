@@ -1,11 +1,11 @@
 import { useAppDispatch } from "../store/store";
 import { logout } from "../store/authSlice";
-
+import { deleteToken } from "../utils/tokenStorage";
 function LogoutButton() {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    deleteToken();
     dispatch(logout());
   };
 

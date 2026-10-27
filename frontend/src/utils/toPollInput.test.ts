@@ -1,15 +1,15 @@
-import { describe, expect, it } from 'vitest'
-import { toPollInput } from './toPollInput'
-import type { PollDetails } from '../api/pollsService'
+import { describe, expect, it } from "vitest";
+import { toPollInput } from "./toPollInput";
+import type { PollDetails } from "../api/pollsService";
 
 function details(overrides: Partial<PollDetails> = {}): PollDetails {
   return {
     id: 1,
-    title: 'כותרת',
+    title: "כותרת",
     description: null,
-    category: 'GENERAL',
-    categoryLabel: 'כללי',
-    status: 'APPROVED',
+    category: "GENERAL",
+    categoryLabel: "כללי",
+    status: "APPROVED",
     rejectionReason: null,
     isOpen: true,
     voterCount: 0,
@@ -26,31 +26,31 @@ function details(overrides: Partial<PollDetails> = {}): PollDetails {
     questions: [
       {
         id: 10,
-        text: 'שאלה',
+        text: "שאלה",
         allowMultiple: true,
         position: 0,
         options: [
-          { id: 100, text: 'כן', position: 0 },
-          { id: 101, text: 'לא', position: 1 },
+          { id: 100, text: "כן", position: 0 },
+          { id: 101, text: "לא", position: 1 },
         ],
       },
     ],
     ...overrides,
-  }
+  };
 }
 
-describe('toPollInput', () => {
-  it('ממיר תיאור ריק (null) למחרוזת ריקה', () => {
-    expect(toPollInput(details()).description).toBe('')
-  })
+describe("toPollInput", () => {
+  it("ממיר תיאור ריק (null) למחרוזת ריקה", () => {
+    expect(toPollInput(details()).description).toBe("");
+  });
 
-  it('ממיר תאריך לפורמט של שדה datetime-local בשעון מקומי', () => {
-    expect(toPollInput(details()).closesAt).toBe('2030-05-07T09:05')
-  })
+  it("ממיר תאריך לפורמט של שדה datetime-local בשעון מקומי", () => {
+    expect(toPollInput(details()).closesAt).toBe("2030-05-07T09:05");
+  });
 
-  it('משאיר רק את טקסט התשובות ואת allowMultiple', () => {
+  it("משאיר רק את טקסט התשובות ואת allowMultiple", () => {
     expect(toPollInput(details()).questions).toEqual([
-      { text: 'שאלה', allowMultiple: true, options: ['כן', 'לא'] },
-    ])
-  })
-})
+      { text: "שאלה", allowMultiple: true, options: ["כן", "לא"] },
+    ]);
+  });
+});

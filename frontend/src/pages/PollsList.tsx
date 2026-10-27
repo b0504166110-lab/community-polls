@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { getPolls, getCategories, type PollsFilters } from "../api/pollsService";
+import {
+  getPolls,
+  getCategories,
+  type PollsFilters,
+} from "../api/pollsService";
 import PollsFiltersBar from "../components/PollsFiltersBar";
 import PollCard from "../components/PollCard";
 import PollsResults from "../components/PollsResults";

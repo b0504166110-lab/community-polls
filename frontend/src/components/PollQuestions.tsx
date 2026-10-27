@@ -4,8 +4,6 @@ type Props = {
   questions: PollQuestion[];
 };
 
-// מציג את השאלות והתשובות לקריאה בלבד, בלי אפשרות לבחור.
-// משמש כשאי אפשר להצביע ואין תוצאות להציג, למשל סקר שממתין לאישור המנהל
 function PollQuestions({ questions }: Props) {
   return (
     <div>

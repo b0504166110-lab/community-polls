@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import type { Poll } from "../api/pollsService";
-import type{ ReactNode } from "react";
+import type { ReactNode } from "react";
 
-function PollCard({ children,poll }:{children?:ReactNode,poll: Poll }) {
+function PollCard({ children, poll }: { children?: ReactNode; poll: Poll }) {
   const navigate = useNavigate();
 
   return (

@@ -8,11 +8,10 @@ import { getErrorMessage, getFieldErrors } from "../api/client";
 import ErrorMessage from "../components/ErrorMessage";
 import { useAppDispatch } from "../store/store";
 import { setUser } from "../store/authSlice";
-
+import { setToken } from "../utils/tokenStorage";
 function RegisterPage() {
   const dispatch = useAppDispatch();
 
-  // React Hook Form: מנהל את שדות הטופס ואת שגיאות הוולידציה
   const {
     register,
     handleSubmit,
@@ -21,15 +20,12 @@ function RegisterPage() {
   } = useForm<RegisterData>();
 
   const registerMutation = useMutation({
-    // login מקבלת שני פרמטרים, ו-mutate מעביר אובייקט אחד - לכן מפרקים אותו
     mutationFn: (data: RegisterData) =>
       registerUser(data.name, data.email, data.password),
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
+      setToken(data.token);
       dispatch(setUser(data.user));
-      // בהמשך: מעבר לדף הסקרים
     },
-    // שגיאות ולידציה מהשרת מוצגות מתחת לשדה הרלוונטי
     onError: (error) => {
       const fieldErrors = getFieldErrors(error);
       for (const field of ["name", "email", "password"] as const) {
@@ -40,13 +36,11 @@ function RegisterPage() {
     },
   });
 
-  // רץ רק אם כל השדות עברו את הוולידציה
   const onSubmit = (data: RegisterData) => {
     registerMutation.mutate(data);
   };
 
   return (
-    // noValidate: מבטל את הבדיקות המובנות של הדפדפן, כדי שרק React Hook Form יבדוק ויציג הודעות בעברית
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <h1>הרשמה</h1>
       <div>
@@ -96,7 +90,6 @@ function RegisterPage() {
         <ErrorMessage message={errors.password?.message} />
       </div>
 
-      {/* שגיאה מהשרת, למשל "אימייל כבר רשום במערכת" */}
       {registerMutation.isError && !Object.keys(errors).length && (
         <ErrorMessage message={getErrorMessage(registerMutation.error)} />
       )}

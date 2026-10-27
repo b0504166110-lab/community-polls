@@ -7,7 +7,7 @@ function AdminPollCard({ poll }: { poll: AdminPoll }) {
   return (
     <PollCard poll={poll}>
       <PollStatusInfo poll={poll} />
-     <p>{poll.creator.name}</p>
+      <p>{poll.creator.name}</p>
       <AdminPollActions
         pollId={poll.id}
         status={poll.status}

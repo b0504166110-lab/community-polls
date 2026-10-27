@@ -1,12 +1,13 @@
 import axios from "axios";
 import { store } from "../store/store";
 import { logout } from "../store/authSlice";
+import { getToken, deleteToken } from "../utils/tokenStorage";
 const API_URL = import.meta.env.VITE_API_URL ?? "/api";
 const api = axios.create({
   baseURL: API_URL,
 });
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = getToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -18,7 +19,7 @@ api.interceptors.response.use(
   (error) => {
     const code = error.response?.data?.error?.code;
     if (code === "TOKEN_EXPIRED" || code === "INVALID_TOKEN") {
-      localStorage.removeItem("token");
+      deleteToken();
       store.dispatch(logout());
       window.location.href = "/login";
     }
@@ -37,7 +38,6 @@ export function getErrorMessage(error: unknown): string {
   }
   return "משהו השתבש";
 }
-
 
 export function getFieldErrors(error: unknown): Record<string, string> {
   const errors: Record<string, string> = {};

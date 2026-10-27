@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { getPolls, getCategories, type PollsFilters } from "../api/pollsService";
+import {
+  getPolls,
+  getCategories,
+  type PollsFilters,
+} from "../api/pollsService";
 import PollsFiltersBar from "../components/PollsFiltersBar";
 import MyPollCard from "../components/MyPollCard";
 import PollsResults from "../components/PollsResults";
-
 
 function MyPollsList() {
   const [filters, setFilters] = useState<PollsFilters>({
     sort: "newest",
     page: 1,
-    mine:true
+    mine: true,
   });
 
   const { data, isPending, isError, error } = useQuery({
@@ -40,7 +43,7 @@ function MyPollsList() {
         categories={categories}
         onChange={changeFilter}
       />
-<PollsResults
+      <PollsResults
         data={data}
         isPending={isPending}
         isError={isError}
@@ -49,7 +52,6 @@ function MyPollsList() {
         onPageChange={goToPage}
       />
     </div>
-      
   );
 }
 

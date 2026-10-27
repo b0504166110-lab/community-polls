@@ -7,8 +7,6 @@ type Props = {
   height: number;
 };
 
-// עוטף את ECharts ברכיב React: יוצר את הדיאגרמה פעם אחת, מעדכן אותה כשה-option משתנה,
-// משנה את הגודל עם הדף, ומנקה כשהרכיב יורד מהמסך
 function EChart({ option, height }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<echarts.ECharts | null>(null);

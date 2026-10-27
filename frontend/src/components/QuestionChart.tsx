@@ -11,7 +11,6 @@ import { CanvasRenderer } from "echarts/renderers";
 import EChart from "./EChart";
 import type { PollResults } from "../api/pollsService";
 
-// רושמים רק את מה שבאמת משתמשים בו, כדי שהחבילה תישאר קטנה
 echarts.use([
   BarChart,
   PieChart,
@@ -29,8 +28,14 @@ type Props = {
   myChoices: number[];
 };
 
-// עד 6 תשובות בשאלה (כמו בשרת): חמשת צבעי האתר, והשישי בגוון הכהה של הטורקיז כדי שהצבעים לא יחזרו
-const COLORS = ["#6c4cf1", "#ff5d8f", "#ff9f1c", "#12b3a8", "#2f80ed", "#0a7d74"];
+const COLORS = [
+  "#6c4cf1",
+  "#ff5d8f",
+  "#ff9f1c",
+  "#12b3a8",
+  "#2f80ed",
+  "#0a7d74",
+];
 const MINE_COLOR = "#d6336c";
 const TEXT = "#2b2550";
 const TEXT_SECONDARY = "#6b6785";
@@ -43,7 +48,6 @@ const textStyle = {
 
 type Row = Question["options"][number] & { isMine: boolean };
 
-// שאלה עם בחירה אחת: דונאט. הפרוסה שבחרתי בולטת החוצה (אפשר גם ללחוץ על פרוסות אחרות)
 function donutOption(question: Question, rows: Row[]) {
   return {
     textStyle,
@@ -65,7 +69,9 @@ function donutOption(question: Question, rows: Row[]) {
       itemGap: 16,
       textStyle,
       formatter: (name: string) =>
-        rows.find((r) => r.text === name)?.isMine ? `${name} (הבחירה שלי)` : name,
+        rows.find((r) => r.text === name)?.isMine
+          ? `${name} (הבחירה שלי)`
+          : name,
     },
     series: [
       {
@@ -83,7 +89,7 @@ function donutOption(question: Question, rows: Row[]) {
           name: r.text,
           value: r.count,
           itemStyle: { color: COLORS[i] },
-          // הבחירה שלי מוזזת מעט החוצה
+
           selected: r.isMine,
         })),
       },
@@ -91,7 +97,6 @@ function donutOption(question: Question, rows: Row[]) {
   };
 }
 
-// שאלה עם בחירה מרובה: עמודות אופקיות (האחוזים לא מסתכמים ל-100, אז לא עוגה)
 function barsOption(rows: Row[]) {
   return {
     textStyle,
@@ -101,8 +106,13 @@ function barsOption(rows: Row[]) {
       formatter: (p: { data: Row }) =>
         `${p.data.text}<br/><b>${p.data.count}</b> קולות (${p.data.percent}%)`,
     },
-    // RTL: ציר הערכים הפוך, כך שהעמודות גדלות מימין לשמאל
-    xAxis: { type: "value", inverse: true, show: false, max: (v: { max: number }) => Math.max(v.max * 1.15, 1) },
+
+    xAxis: {
+      type: "value",
+      inverse: true,
+      show: false,
+      max: (v: { max: number }) => Math.max(v.max * 1.15, 1),
+    },
     yAxis: {
       type: "category",
       inverse: true,
@@ -128,7 +138,8 @@ function barsOption(rows: Row[]) {
           position: "left",
           color: TEXT,
           fontSize: 13,
-          formatter: (p: { data: Row }) => `${p.data.count} (${p.data.percent}%)`,
+          formatter: (p: { data: Row }) =>
+            `${p.data.count} (${p.data.percent}%)`,
         },
         data: rows.map((r) => {
           const base = r.isMine ? MINE_COLOR : COLORS[0];
@@ -156,7 +167,6 @@ function barsOption(rows: Row[]) {
   };
 }
 
-// דיאגרמה לשאלה אחת: דונאט לבחירה אחת, עמודות לבחירה מרובה
 function QuestionChart({ question, myChoices }: Props) {
   const rows: Row[] = useMemo(
     () =>
@@ -202,7 +212,6 @@ function QuestionChart({ question, myChoices }: Props) {
         </p>
       )}
 
-      {/* תצוגת טבלה: לקוראי מסך, ולמי שרוצה לראות את המספרים המדויקים */}
       <details>
         <summary>הצגה כטבלה</summary>
         <table>

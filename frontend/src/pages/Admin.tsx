@@ -18,7 +18,12 @@ function AdminPage() {
   });
 
   function changeFilter(name: keyof AdminPollsFilters, value: string) {
-    const converted = name === "hidden" ? (value === "" ? undefined : value === "true") : value || undefined;
+    const converted =
+      name === "hidden"
+        ? value === ""
+          ? undefined
+          : value === "true"
+        : value || undefined;
     setFilters((prev) => ({ ...prev, [name]: converted, page: 1 }));
   }
 

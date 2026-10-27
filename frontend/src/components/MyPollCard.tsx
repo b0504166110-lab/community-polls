@@ -4,7 +4,6 @@ import PollActions from "./PollActions";
 import PollStatusInfo from "./PollStatusInfo";
 
 function MyPollCard({ poll }: { poll: Poll }) {
-
   return (
     <PollCard poll={poll}>
       <PollStatusInfo poll={poll} />

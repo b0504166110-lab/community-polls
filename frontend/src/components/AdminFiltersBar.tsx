@@ -31,7 +31,9 @@ function AdminFiltersBar({ filters, onChange }: AdminFiltersBarProps) {
       />
 
       <FilterSelect
-        value={filters.hidden === undefined ? undefined : String(filters.hidden)}
+        value={
+          filters.hidden === undefined ? undefined : String(filters.hidden)
+        }
         options={HIDDEN_OPTIONS}
         allLabel="מוסתרים וגלויים"
         onChange={(v) => onChange("hidden", v)}

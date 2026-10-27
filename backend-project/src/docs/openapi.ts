@@ -630,8 +630,8 @@ export const openApiSpec = {
       get: {
         tags: ['Polls'],
         summary: 'פרטי סקר כולל אפשרויות והרשאות',
-        description: 'סקר שלא אושר או שהוסתר - נגיש רק ליוצר ולמנהל; לאחרים מוחזר 404.',
-        security: optionalBearer,
+        description: 'דורש התחברות - אורח מקבל 401. סקר שלא אושר או שהוסתר - נגיש רק ליוצר ולמנהל; לאחרים מוחזר 404.',
+        security: bearer,
         responses: {
           200: { description: 'פרטי הסקר', content: json('PollDetails', pollDetailsExample) },
           400: R.validation,
