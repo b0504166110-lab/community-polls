@@ -118,10 +118,15 @@ const DEMO_POLLS: DemoPoll[] = [
 async function upsertUser(
   prisma: PrismaClient,
   data: { email: string; name: string; password: string; role: 'USER' | 'ADMIN' },
+  syncPassword = false,
 ) {
   const email = data.email.trim().toLowerCase();
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
+    // סיסמת משתמש קיים נדרסת רק עבור משתמשי הדגמה (syncPassword), כדי שתתאים ל-SEED_DEMO_PASSWORD
+    if (syncPassword) {
+      return prisma.user.update({ where: { email }, data: { passwordHash: await hashPassword(data.password) } });
+    }
     // לא דורסים סיסמה קיימת; רק מוודאים שהמנהל נשאר מנהל
     if (data.role === 'ADMIN' && existing.role !== 'ADMIN') {
       return prisma.user.update({ where: { email }, data: { role: 'ADMIN' } });
@@ -163,9 +168,9 @@ export async function seed(prisma: PrismaClient) {
     return;
   }
 
-  const noa = await upsertUser(prisma, { email: 'noa@example.com', name: 'נועה כהן', password: userPassword, role: 'USER' });
-  const yossi = await upsertUser(prisma, { email: 'yossi@example.com', name: 'יוסי לוי', password: userPassword, role: 'USER' });
-  const dana = await upsertUser(prisma, { email: 'dana@example.com', name: 'דנה מזרחי', password: userPassword, role: 'USER' });
+  const noa = await upsertUser(prisma, { email: 'noa@example.com', name: 'נועה כהן', password: userPassword, role: 'USER' }, true);
+  const yossi = await upsertUser(prisma, { email: 'yossi@example.com', name: 'יוסי לוי', password: userPassword, role: 'USER' }, true);
+  const dana = await upsertUser(prisma, { email: 'dana@example.com', name: 'דנה מזרחי', password: userPassword, role: 'USER' }, true);
   console.log(`👤 משתמשי הדגמה: noa@example.com, yossi@example.com, dana@example.com${isProduction ? '' : ` / ${userPassword}`}`);
 
   if ((await prisma.poll.count()) > 0) {
